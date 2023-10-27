@@ -6,13 +6,9 @@ const {
   ex,
   printAddress,
   deploySC,
-  deploySCNoUp,
+  deploySCNoUp1,
+  deploySCNoUp
 } = require("../utils");
-
-const { getRootFromMT } = require("../utils/merkleTree");
-var MINTER_ROLE = getRole("MINTER_ROLE");
-var BURNER_ROLE = getRole("BURNER_ROLE");
-
 
 
 async function deployMumbai() {
@@ -23,12 +19,12 @@ async function deployMumbai() {
     // Define name y symbol para el contrato CuyCollectionNft
     var _name = "CuyCollectionNft"; // Nombre del contrato
     var _symbol = "CUYNFT";
-    const _bbtknContract ='0xE128C7971c2c11760434AE99FEc50C9e1d9c9FcC';
+    var _bbtknContract ='0x9736520647D6A9Ad1B8Cdf3048b9c61779a3A821';
 
     // Despliega el contrato CuyCollectionNft en Mumbai utilizando deploySCNoUp
-    const CuyCollectionNftAddress = await deploySCNoUp(
+    const CuyCollectionNftAddress = await deploySCNoUp1(
       "CuyCollectionNft", // Nombre del contrato
-      [_name, _symbol, _bbtknContract], relAddMumbai// Argumentos del constructor como un arreglo
+      _name, _symbol, _bbtknContract, relAddMumbai// Argumentos del constructor como un arreglo
     );
 
     console.log("Contrato CuyCollectionNft desplegado en Mumbai en la dirección:", CuyCollectionNftAddress);
@@ -48,4 +44,4 @@ deployMumbai()
   .catch((error) => {
     console.error(error);
     process.exitCode = 1;
-  });
+});

@@ -8,10 +8,14 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 // Creamos una base personalizada que combina las funcionalidades deseadas
 contract PublicSale is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
     IUniSwapV2Router02 router;
+    IERC20 usdcToken;
+    IERC20Upgradeable bbToken;
+ 
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -20,15 +24,25 @@ contract PublicSale is Initializable, PausableUpgradeable, AccessControlUpgradea
     uint256 constant startDate = 1696032000;
     uint256 constant MAX_PRICE_NFT = 90_000 * 10 ** 18;
 
-    event PurchaseNftWithId(address account, uint256 id);
+    
 
-    function initialize() public initializer {
+   function initialize(
+        address _bbTokenAddress,
+        address _usdcTokenAddress,
+        address _uniswapRouterAddress
+    ) public initializer {
         __Pausable_init();
         __AccessControl_init();
+        __UUPSUpgradeable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(UPGRADER_ROLE, msg.sender);
+        _grantRole(EXECUTER_ROLE, msg.sender);
+
+        usdcToken = IERC20(_usdcTokenAddress);
+        bbToken = IERC20Upgradeable(_bbTokenAddress);
+        router = IUniSwapV2Router02(_uniswapRouterAddress);
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(UPGRADER_ROLE) {
@@ -80,7 +94,6 @@ contract PublicSale is Initializable, PausableUpgradeable, AccessControlUpgradea
             return price > MAX_PRICE_NFT ? MAX_PRICE_NFT : price;
         } else {
             revert("Invalid ID range");
-        }
-    }
 }
-
+}
+}

@@ -32,6 +32,8 @@ async function verify(implementation, contractName, arguments = []) {
   }
 }
 
+
+
 async function printAddress(contractName, proxyAddress) {
   console.log(`${contractName} Proxy Address: ${proxyAddress}`);
   var implementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -40,6 +42,7 @@ async function printAddress(contractName, proxyAddress) {
   console.log(`${contractName} Impl Address: ${implementationAddress}`);
   return implementationAddress;
 }
+
 async function deploySC(contractName) {
   var smartContract = await gcf(contractName);
   var proxyContract = await dp(smartContract, [], {
@@ -52,6 +55,9 @@ async function deploySC(contractName) {
   }
   return proxyContract;
 }
+
+
+
 
 
 
@@ -69,12 +75,28 @@ async function deploySCNoUp(contractName, args = []) {
   return smartContract;
 }
 
+async function deploySCNoUp1(contractName) {
+  var smartContract = await dc(contractName);
+
+  // true cuando se usa '--network matic' en el script de deployment
+  if (process.env.HARDHAT_NETWORK) {
+    var res = await smartContract.waitForDeployment();
+    await res.deploymentTransaction().wait(5);
+
+    console.log(`${contractName} - Imp: ${await smartContract.getAddress()}`);
+  }
+  return smartContract;
+}
+
 module.exports = {
   ex,
   verify,
+
   getRole,
   printAddress,
   deploySC,
+
   deploySCNoUp,
+  deploySCNoUp1,
   pEth,
 };

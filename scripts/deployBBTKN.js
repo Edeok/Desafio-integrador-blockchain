@@ -14,16 +14,18 @@ async function deployGoerli() {
   try {
     var relAddGoerli = "0x6122D4939B63A37cbdFDD1E40564a7Afd5163708"; // Dirección del relayer en Goerli
 
-    // Despliega el contrato USDCoin en Goerli utilizando deploySC
-    const USDCoinAddress = await deploySCNoUp1("USDCoin", "USDC", relAddGoerli);
+    // Despliega el contrato BBitesToken en Goerli utilizando deploySC
+    const bbitesTokenAddress = await deploySCNoUp1(
+      "BBitesToken",
+      "BBTKN",
+      relAddGoerli
+    );
     console.log(
-      "Contrato USDCoin desplegado en Goerli en la dirección:",
-      USDCoinAddress
+      "Contrato BBitesToken desplegado en Goerli en la dirección:",
+      bbitesTokenAddress
     );
 
-    // Puedes configurar y realizar otras acciones necesarias para estos contratos aquí.
-
-    await verify(USDCoinAddress, "USDCoin");
+    await verify(bbitesTokenAddress, "BBitesToken");
   } catch (error) {
     console.error("Error al desplegar contratos en Goerli:", error);
     process.exit(1);
