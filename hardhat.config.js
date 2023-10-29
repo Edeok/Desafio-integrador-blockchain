@@ -4,42 +4,45 @@ require("@openzeppelin/hardhat-upgrades");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity:{
-    compilers:[
-    {
-      version: "0.8.0",
-      settings: {
-        optimizer: {
-          enabled: true,
-          runs: 200,
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.0",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
         },
       },
-    }, {
-    version: "0.8.19",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
+      {
+        version: "0.8.19",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
       },
-    },
-  },{
-    version: "0.8.20",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
+      {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
       },
-    },
-  },{
-    version: "0.8.22",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
+      {
+        version: "0.8.22",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
       },
-    },
-  },
-],
+    ],
   },
   networks: {
     goerli: {
@@ -57,5 +60,13 @@ module.exports = {
       goerli: process.env.ETHERSCAN_API_KEY,
       polygonMumbai: process.env.POLYGONSCAN_API_KEY,
     },
+  },
+  // Configuración para solidty-coverage
+  mocha: {
+    timeout: 0,
+  },
+  gasReporter: {
+    currency: "USD",
+    gasPrice: 21,
   },
 };
